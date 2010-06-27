@@ -1,0 +1,19 @@
+{
+  "name": "biggie-orm",
+  "description": "The ORM for the Biggie framework.",
+  "version": "0.1.0",
+  "author": "Tim Smart",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/biggie/biggie-orm.git"
+  },
+  "engine": [ "node >=0.1.99" ],
+  "dependencies": {
+    "socket.io": ">=0.4.0",
+    "node-asset": ">=0.1.4",
+    "vows": ">=0.4.1"
+  },
+  "directories": {
+    "lib": "./lib/biggie-orm"
+  }
+}
