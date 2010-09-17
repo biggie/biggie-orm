@@ -9,11 +9,7 @@
   },
   "engine": [ "node >=0.1.99" ],
   "dependencies": {
-    "socket.io": ">=0.4.0",
-    "node-asset": ">=0.1.4",
-    "vows": ">=0.4.1"
+    "socket.io": ">=0.4.0"
   },
-  "directories": {
-    "lib": "./lib/biggie-orm"
-  }
+  "main": "./lib/orm"
 }
