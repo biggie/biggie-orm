@@ -53,6 +53,63 @@ module.exports = {
       done();
     });
   },
+  'Can save model': function (assert, done) {
+    var user = new User({
+      name: 'Tim'
+    });
+
+    assert.ok(user.isNew);
+    assert.ok(!user.id);
+    assert.ok(!user.hasErrors);
+
+    user.save(function (error, model) {
+      assert.ok(!error);
+      assert.equal(user, model);
+      assert.ok(!user.isNew);
+      assert.ok(user.id);
+      assert.equal(user.name, 'Tim');
+      done();
+    });
+  },
+  'Can update model': function (assert, done) {
+    var user = new User({
+      name: 'Tim'
+    });
+
+    assert.ok(user.isNew);
+    assert.ok(!user.id);
+    assert.ok(!user.hasErrors);
+
+    user.save(function (error, model) {
+      assert.ok(!error);
+      user.name = 'Bob';
+      user.save(function (error, model) {
+        assert.equal(user, model);
+        assert.ok(!user.isNew);
+        assert.ok(user.id);
+        assert.equal(user.name, 'Bob');
+        done();
+      });
+    });
+  },
+  'Can get model': function (assert, done) {
+    var user = new User({
+      name: 'Tim'
+    });
+
+    assert.ok(!user.hasErrors);
+
+    user.save(function (error, model) {
+      assert.ok(!error);
+      User.get(model.id, function (error, user) {
+        assert.ok(!error);
+        assert.ok(!user.isNew);
+        assert.ok(user.id);
+        assert.equal(user.name, 'Tim');
+        done();
+      });
+    });
+  },
   'Can remove unsaved model': function (assert, done) {
     var user = new User({
       name: 'Tim'
@@ -77,12 +134,16 @@ module.exports = {
 
     user.save(function (error, model) {
       assert.ok(!error);
+      var id = user.id;
       user.remove(function (error, model) {
         assert.ok(!error);
         assert.equal(model.isRemoved, true);
         assert.ok(model.isNew);
-        // TODO: Add test to check if still exists
-        done();
+        User.get(id, function (error, model) {
+          assert.ok(!error);
+          assert.ok(!model);
+          done();
+        });
       });
     });
   },
