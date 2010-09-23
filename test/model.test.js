@@ -58,24 +58,6 @@ module.exports = {
       done();
     });
   },
-  'Can save model': function (assert, done) {
-    var user = new User({
-      name: 'Tim'
-    });
-
-    assert.ok(user.isNew);
-    assert.ok(!user.id);
-    assert.ok(!user.hasErrors);
-
-    user.save(function (error, model) {
-      assert.ok(!error);
-      assert.equal(user, model);
-      assert.ok(!user.isNew);
-      assert.ok(user.id);
-      assert.equal(user.name, 'Tim');
-      done();
-    });
-  },
   'Can update model': function (assert, done) {
     var user = new User({
       name: 'Tim'
