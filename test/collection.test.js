@@ -52,6 +52,31 @@ module.exports = {
       done();
     });
   },
+  'Can save mixed collection': function (assert, done) {
+    var user = new User({
+      name: 'Tim'
+    });
+    var user2 = new User({
+      name: 'Bob'
+    });
+    var users = new Collection([user, user2]);
+
+    user.save(function (error, model) {
+      assert.ok(!error);
+      users.save(function (error, coll) {
+        assert.ok(!error);
+        assert.equal(users, coll);
+        assert.equal(users.length, 2);
+        assert.equal(users[0], user);
+        assert.equal(users[1], user2);
+        assert.equal(users[0].id, 1);
+        assert.equal(users[1].id, 2);
+        assert.equal(users[0].isNew, false);
+        assert.equal(users[1].isNew, false);
+        done();
+      });
+    });
+  },
   'Can get collection from all()': function (assert, done) {
     var user = new User({
       name: 'Tim'
