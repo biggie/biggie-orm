@@ -21,6 +21,11 @@ module.exports = {
 
     assert.ok(typeof user === 'object');
   },
+  'Can create model with new()': function (assert) {
+    var user = User.new();
+
+    assert.ok(typeof user === 'object');
+  },
   'Can create model with attributes': function (assert) {
     var user = new User({
       name: 'Tim'
