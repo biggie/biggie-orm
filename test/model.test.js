@@ -106,7 +106,7 @@ module.exports = {
       assert.ok(!error);
       assert.equal(user, model);
       assert.ok(user.isNew);
-      assert.ok(!user.isRemoved);
+      assert.ok(!user.removed);
       done();
     });
   },
@@ -124,7 +124,7 @@ module.exports = {
       var id = user.id;
       user.remove(function (error, model) {
         assert.ok(!error);
-        assert.equal(model.isRemoved, true);
+        assert.equal(model.removed, true);
         assert.ok(model.isNew);
         User.get(id, function (error, model) {
           assert.ok(!error);

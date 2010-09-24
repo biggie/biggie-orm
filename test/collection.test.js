@@ -122,8 +122,8 @@ module.exports = {
         assert.equal(users.length, 2);
         assert.ok(!users[0].id);
         assert.ok(!users[1].id);
-        assert.equal(users[0].isRemoved, true);
-        assert.equal(users[1].isRemoved, true);
+        assert.equal(users[0].removed, true);
+        assert.equal(users[1].removed, true);
         assert.equal(users[0].isNew, true);
         assert.equal(users[1].isNew, true);
         User.all(function (error, users) {
