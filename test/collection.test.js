@@ -50,6 +50,8 @@ module.exports = {
       assert.equal(users[1].id, 2);
       assert.equal(users[0].isNew, false);
       assert.equal(users[1].isNew, false);
+      assert.equal(users[0].changed, false);
+      assert.equal(users[1].changed, false);
       done();
     });
   },
@@ -79,6 +81,25 @@ module.exports = {
         assert.equal(users[1].name, 'Mark');
         done();
       });
+    });
+  },
+  'Does not save unchanged models': function (assert, done) {
+    var user = new User();
+    var user2 = new User({
+      name: 'Bob'
+    });
+    var users = new Collection([user, user2]);
+
+    users.save(function (error, coll) {
+      assert.ok(!error);
+      assert.equal(users[0], user);
+      assert.equal(users[1], user2);
+      assert.equal(users[1].id, 1);
+      assert.equal(users[0].isNew, true);
+      assert.equal(users[1].isNew, false);
+      assert.equal(users[0].changed, false);
+      assert.equal(users[1].changed, false);
+      done();
     });
   },
   'Can get collection from all()': function (assert, done) {

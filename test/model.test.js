@@ -20,11 +20,17 @@ module.exports = {
     var user = new User();
 
     assert.ok(typeof user === 'object');
+    assert.equal(user.changed, false);
+    assert.equal(user.isNew,   true);
+    assert.equal(user.removed, false);
   },
   'Can create model with new()': function (assert) {
     var user = User.new();
 
     assert.ok(typeof user === 'object');
+    assert.equal(user.changed, false);
+    assert.equal(user.isNew,   true);
+    assert.equal(user.removed, false);
   },
   'Can create model with attributes': function (assert) {
     var user = new User({
@@ -32,20 +38,24 @@ module.exports = {
     });
 
     assert.ok(user.name === 'Tim');
+    assert.equal(user.changed, true);
+    assert.equal(user.isNew,   true);
+    assert.equal(user.removed, false);
+
+    assert.equal(user.changed_attributes[0], 'name');
   },
   'Can add custom props to models': function (assert) {
     var user = new User({
       name: 'Tim'
     });
 
-    assert.ok(user.getName() === 'Tim');
+    assert.equal(user.getName(), 'Tim');
   },
   'Can save model': function (assert, done) {
     var user = new User({
       name: 'Tim'
     });
 
-    assert.ok(user.isNew);
     assert.ok(!user.id);
     assert.ok(!user.hasErrors);
 
@@ -55,6 +65,9 @@ module.exports = {
       assert.ok(!user.isNew);
       assert.ok(user.id);
       assert.equal(user.name, 'Tim');
+      assert.equal(user.changed, false);
+      assert.equal(user.changed_attributes.length, 0);
+      assert.eql(user.previous.attributes, user.attributes);
       done();
     });
   },
@@ -91,6 +104,7 @@ module.exports = {
       User.get(model.id, function (error, user) {
         assert.ok(!error);
         assert.ok(!user.isNew);
+        assert.ok(!user.changed);
         assert.ok(user.id);
         assert.equal(user.name, 'Tim');
         done();
