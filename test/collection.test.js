@@ -5,7 +5,8 @@ orm.pending || (orm.pending = 0);
 
 var Collection = orm.Collection;
 
-var User = orm.model('User', {
+// User2 so we don't conflict with other tests.
+var User = orm.model('User2', {
   name: {type: 'string'},
   email: {type: 'string'},
 });
@@ -63,6 +64,7 @@ module.exports = {
 
     user.save(function (error, model) {
       assert.ok(!error);
+      user2.name = 'Mark';
       users.save(function (error, coll) {
         assert.ok(!error);
         assert.equal(users, coll);
@@ -73,6 +75,8 @@ module.exports = {
         assert.equal(users[1].id, 2);
         assert.equal(users[0].isNew, false);
         assert.equal(users[1].isNew, false);
+        assert.equal(users[0].name, 'Tim');
+        assert.equal(users[1].name, 'Mark');
         done();
       });
     });
