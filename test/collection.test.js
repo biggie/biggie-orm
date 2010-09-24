@@ -28,8 +28,8 @@ module.exports = {
     assert.equal(users.length, 2);
     assert.equal(users[0], user);
     assert.equal(users[1], user2);
-    assert.equal(users[0].isNew, true);
-    assert.equal(users[1].isNew, true);
+    assert.equal(users[0].is_new, true);
+    assert.equal(users[1].is_new, true);
   },
   'Can save collection': function (assert, done) {
     var user = new User({
@@ -48,8 +48,8 @@ module.exports = {
       assert.equal(users[1], user2);
       assert.equal(users[0].id, 1);
       assert.equal(users[1].id, 2);
-      assert.equal(users[0].isNew, false);
-      assert.equal(users[1].isNew, false);
+      assert.equal(users[0].is_new, false);
+      assert.equal(users[1].is_new, false);
       assert.equal(users[0].changed, false);
       assert.equal(users[1].changed, false);
       done();
@@ -75,8 +75,8 @@ module.exports = {
         assert.equal(users[1], user2);
         assert.equal(users[0].id, 1);
         assert.equal(users[1].id, 2);
-        assert.equal(users[0].isNew, false);
-        assert.equal(users[1].isNew, false);
+        assert.equal(users[0].is_new, false);
+        assert.equal(users[1].is_new, false);
         assert.equal(users[0].name, 'Tim');
         assert.equal(users[1].name, 'Mark');
         done();
@@ -95,8 +95,8 @@ module.exports = {
       assert.equal(users[0], user);
       assert.equal(users[1], user2);
       assert.equal(users[1].id, 1);
-      assert.equal(users[0].isNew, true);
-      assert.equal(users[1].isNew, false);
+      assert.equal(users[0].is_new, true);
+      assert.equal(users[1].is_new, false);
       assert.equal(users[0].changed, false);
       assert.equal(users[1].changed, false);
       done();
@@ -145,8 +145,8 @@ module.exports = {
         assert.ok(!users[1].id);
         assert.equal(users[0].removed, true);
         assert.equal(users[1].removed, true);
-        assert.equal(users[0].isNew, true);
-        assert.equal(users[1].isNew, true);
+        assert.equal(users[0].is_new, true);
+        assert.equal(users[1].is_new, true);
         User.all(function (error, users) {
           assert.ok(!error);
           assert.ok(users);

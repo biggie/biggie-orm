@@ -21,7 +21,7 @@ module.exports = {
 
     assert.ok(typeof user === 'object');
     assert.equal(user.changed, false);
-    assert.equal(user.isNew,   true);
+    assert.equal(user.is_new,   true);
     assert.equal(user.removed, false);
   },
   'Can create model with new()': function (assert) {
@@ -29,7 +29,7 @@ module.exports = {
 
     assert.ok(typeof user === 'object');
     assert.equal(user.changed, false);
-    assert.equal(user.isNew,   true);
+    assert.equal(user.is_new,   true);
     assert.equal(user.removed, false);
   },
   'Can create model with attributes': function (assert) {
@@ -39,10 +39,10 @@ module.exports = {
 
     assert.ok(user.name === 'Tim');
     assert.equal(user.changed, true);
-    assert.equal(user.isNew,   true);
+    assert.equal(user.is_new,   true);
     assert.equal(user.removed, false);
 
-    assert.equal(user.changed_attributes[0], 'name');
+    assert.equal(user.diff.attributes[0], 'name');
   },
   'Can add custom props to models': function (assert) {
     var user = new User({
@@ -57,16 +57,16 @@ module.exports = {
     });
 
     assert.ok(!user.id);
-    assert.ok(!user.hasErrors);
+    assert.ok(!user.has_errors);
 
     user.save(function (error, model) {
       assert.ok(!error);
       assert.equal(user, model);
-      assert.ok(!user.isNew);
+      assert.ok(!user.is_new);
       assert.ok(user.id);
       assert.equal(user.name, 'Tim');
       assert.equal(user.changed, false);
-      assert.equal(user.changed_attributes.length, 0);
+      assert.equal(user.diff.attributes.length, 0);
       assert.eql(user.previous.attributes, user.attributes);
       done();
     });
@@ -76,16 +76,16 @@ module.exports = {
       name: 'Tim'
     });
 
-    assert.ok(user.isNew);
+    assert.ok(user.is_new);
     assert.ok(!user.id);
-    assert.ok(!user.hasErrors);
+    assert.ok(!user.has_errors);
 
     user.save(function (error, model) {
       assert.ok(!error);
       user.name = 'Bob';
       user.save(function (error, model) {
         assert.equal(user, model);
-        assert.ok(!user.isNew);
+        assert.ok(!user.is_new);
         assert.ok(user.id);
         assert.equal(user.name, 'Bob');
         done();
@@ -97,13 +97,13 @@ module.exports = {
       name: 'Tim'
     });
 
-    assert.ok(!user.hasErrors);
+    assert.ok(!user.has_errors);
 
     user.save(function (error, model) {
       assert.ok(!error);
       User.get(model.id, function (error, user) {
         assert.ok(!error);
-        assert.ok(!user.isNew);
+        assert.ok(!user.is_new);
         assert.ok(!user.changed);
         assert.ok(user.id);
         assert.equal(user.name, 'Tim');
@@ -119,7 +119,7 @@ module.exports = {
     user.remove(function (error, model) {
       assert.ok(!error);
       assert.equal(user, model);
-      assert.ok(user.isNew);
+      assert.ok(user.is_new);
       assert.ok(!user.removed);
       done();
     });
@@ -129,9 +129,9 @@ module.exports = {
       name: 'Tim'
     });
 
-    assert.ok(user.isNew);
+    assert.ok(user.is_new);
     assert.ok(!user.id);
-    assert.ok(!user.hasErrors);
+    assert.ok(!user.has_errors);
 
     user.save(function (error, model) {
       assert.ok(!error);
@@ -139,7 +139,7 @@ module.exports = {
       user.remove(function (error, model) {
         assert.ok(!error);
         assert.equal(model.removed, true);
-        assert.ok(model.isNew);
+        assert.ok(model.is_new);
         User.get(id, function (error, model) {
           assert.ok(!error);
           assert.ok(!model);
