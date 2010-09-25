@@ -270,6 +270,48 @@ module.exports = {
       });
     });
   },
+  'test collection of parents': function (assert, done) {
+    var project = Project.new({
+      name: 'test'
+    });
+    var project2 = Project.new({
+      name: 'test2'
+    });
+
+    var comment = Comment.new({
+      text: 'do it'
+    });
+    var comment2 = Comment.new({
+      text: 'do it again'
+    });
+
+    assert.ok(!project.has_errors);
+    assert.ok(!project2.has_errors);
+    assert.ok(!comment.has_errors);
+    assert.ok(!comment2.has_errors);
+
+    var projects = new Collection([project, project2]);
+
+    project.addComment(comment);
+    project2.addComment(comment2);
+
+    projects.save(function (error) {
+      assert.ok(!error);
+
+      projects.remove(function (error) {
+        assert.ok(!error);
+
+        assert.equal(project.is_new,  true);
+        assert.equal(project2.is_new, true);
+        assert.equal(project.removed,  true);
+        assert.equal(project2.removed, true);
+        assert.ok(!project.id);
+        assert.ok(!project2.id);
+
+        done();
+      });
+    });
+  },
   after: function () {
     --orm.pending || orm.db.end();
   }
