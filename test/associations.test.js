@@ -84,7 +84,7 @@ module.exports = {
       assert.equal(task.is_new, false);
       assert.ok(task.id);
       assert.equal(project.task_id, task.id);
-      assert.ok(task.project_id, project.id);
+      assert.equal(task.project_id, project.id);
 
       done();
     });
@@ -146,7 +146,7 @@ module.exports = {
         assert.equal(task.is_new, false);
         assert.ok(task.id);
         assert.equal(project.task_id, task.id);
-        assert.ok(task.project_id, project.id);
+        assert.equal(task.project_id, project.id);
 
         done();
       });
