@@ -181,7 +181,7 @@ module.exports = {
 
         assert.equal(comments.length, 2);
         comment = comments[0];
-        comments2 = comments[1];
+        comment2 = comments[1];
 
         assert.equal(comment.is_new, false);
         assert.equal(comment2.is_new, false);
@@ -213,14 +213,14 @@ module.exports = {
 
       project.getTask(function (error, task) {
         assert.ok(!error);
-        assert.ok(task);
 
-        assert.equal(task.is_new, false);
-        assert.ok(task.id);
-        assert.equal(project.task_id, task.id);
-        assert.ok(task.project_id, project.id);
+        task.remove(function (error) {
+          assert.ok(!error);
 
-        done();
+          assert.equal(task.removed, true);
+          assert.ok(!task.id);
+          done();
+        });
       });
     });
   },
@@ -249,20 +249,24 @@ module.exports = {
 
       project.getComments(function (error, comments) {
         assert.ok(!error);
-        assert.ok(comments);
 
-        assert.equal(comments.length, 2);
-        comment = comments[0];
-        comments2 = comments[1];
+        comments.remove(function (error, coll) {
+          assert.ok(!error);
 
-        assert.equal(comment.is_new, false);
-        assert.equal(comment2.is_new, false);
-        assert.ok(comment.id);
-        assert.ok(comment2.id);
-        assert.equal(comment.project_id,  project.id);
-        assert.equal(comment2.project_id, project.id);
+          assert.equal(comments.length, 2);
+          assert.equal(comments, coll);
+          comment = comments[0];
+          comment2 = comments[1];
 
-        done();
+          assert.equal(comment.is_new,  true);
+          assert.equal(comment2.is_new, true);
+          assert.equal(comment.removed,  true);
+          assert.equal(comment2.removed, true);
+          assert.ok(!comment.id);
+          assert.ok(!comment2.id);
+
+          done();
+        });
       });
     });
   },
