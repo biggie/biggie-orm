@@ -58,14 +58,9 @@ module.exports = {
 
     task.addComments(comments2);
 
-    console.dir(project.diff.associations);
-    console.dir(task.diff.associations);
-    console.dir(comment.diff.associations);
-    console.dir(comment2.diff.associations);
+    assert.equal(project.diff.associations['comment'], comments);
   },
   'test has_one + belongs_to': function (assert, done) {
-    // FIXME: Remove
-    return done();
     var project = Project.new({
       name: 'test'
     });
@@ -79,22 +74,16 @@ module.exports = {
 
     project.setTask(task);
 
-    project.getTask(function (error, model) {
+    project.save(function (error) {
       assert.ok(!error);
-      assert.equal(model, task);
 
-      project.save(function (error) {
-        assert.ok(!error);
+      assert.equal(task.is_new, false);
+      assert.ok(task.id);
+      assert.equal(project.task_id, task.id);
+      assert.ok(task.project_id, project.id);
 
-        assert.equal(task.is_new, false);
-        assert.ok(task.id);
-        assert.equal(project.task_id, task.id);
-        assert.ok(task.project_id, project.id);
-
-        done();
-      });
+      done();
     });
-
   },
   'test has_many and belongs_to': function (assert, done) {
     // FIXME: Remove
