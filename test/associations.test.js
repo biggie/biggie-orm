@@ -27,7 +27,11 @@ var Comment = orm.model('Comment', {
 
 module.exports = {
   setup: function (callback) {
-    Project.clear(callback);
+    Project.clear(function (error) {
+      Task.clear(function (error) {
+        Comment.clear(callback);
+      });
+    });
   },
   'test association creation': function (assert) {
     var project = Project.new({
@@ -86,7 +90,69 @@ module.exports = {
     });
   },
   'test has_many and belongs_to': function (assert, done) {
-    // FIXME: Remove
+    var project = Project.new({
+      name: 'test'
+    });
+
+    var comment = Comment.new({
+      text: 'do it'
+    });
+    var comment2 = Comment.new({
+      text: 'do it again'
+    });
+
+    assert.ok(!project.has_errors);
+    assert.ok(!comment.has_errors);
+    assert.ok(!comment2.has_errors);
+
+    var comments = new Collection([comment, comment2]);
+
+    project.addComments(comments);
+
+    project.save(function (error) {
+      assert.ok(!error);
+
+      assert.equal(comment.is_new, false);
+      assert.equal(comment2.is_new, false);
+      assert.ok(comment.id);
+      assert.ok(comment2.id);
+      assert.equal(comment.project_id,  project.id);
+      assert.equal(comment2.project_id, project.id);
+
+      done();
+    });
+  },
+  'test has_one + get': function (assert, done) {
+    var project = Project.new({
+      name: 'test'
+    });
+
+    var task = Task.new({
+      name: 'do it'
+    });
+
+    assert.ok(!project.has_errors);
+    assert.ok(!task.has_errors);
+
+    project.setTask(task);
+
+    project.save(function (error) {
+      assert.ok(!error);
+
+      project.getTask(function (error, task) {
+        assert.ok(!error);
+        assert.ok(task);
+
+        assert.equal(task.is_new, false);
+        assert.ok(task.id);
+        assert.equal(project.task_id, task.id);
+        assert.ok(task.project_id, project.id);
+
+        done();
+      });
+    });
+  },
+  'test has_many and get': function (assert, done) {
     return done();
     var project = Project.new({
       name: 'test'
@@ -105,11 +171,18 @@ module.exports = {
 
     var comments = new Collection([comment, comment2]);
 
+    project.addComments(comments);
+
     project.save(function (error) {
       assert.ok(!error);
 
-      project.setComments(comments, function (error) {
+      project.getComments(function (error, comments) {
         assert.ok(!error);
+        assert.ok(comments);
+
+        assert.equal(comments.length, 2);
+        comment = comments[0];
+        comments2 = comments[1];
 
         assert.equal(comment.is_new, false);
         assert.equal(comment2.is_new, false);
