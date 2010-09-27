@@ -17,6 +17,20 @@ var SafeCar = orm.model('SafeCar', {
   data:  {type: 'binary'}
 });
 
+var MinMax = orm.model('MinMax', {
+  'one':   {type: 'number', min: 5},
+  'two':   {type: 'number', max: 5},
+  'three': {type: 'number', min: 5, max: 10}
+});
+
+orm.validation_types['async_test'] = function (input, wanted, model, callback) {
+  callback(input === 'passed' ? true : false);
+};
+
+var AsyncV = orm.model('AsyncV', {
+  'test': {type: 'string', async_test: true}
+});
+
 var Car = orm.model('Car', {
   name:   {type: 'string', unique: true, required: true},
   count:  {type: 'number', unique: true},
@@ -81,6 +95,49 @@ module.exports = {
     var errors = car.validate();
 
     assert.equal(errors, false);
+  },
+  'test min max': function (assert) {
+    var min_fail     = new MinMax({ one: 3 });
+    var min_pass     = new MinMax({ one: 7 });
+    var max_fail     = new MinMax({ two: 7 });
+    var max_pass     = new MinMax({ two: 3 });
+    var minmax_fail  = new MinMax({ three: 3 });
+    var minmax_fail2 = new MinMax({ three: 15 });
+    var minmax_pass  = new MinMax({ three: 7 });
+
+    min_fail.validate();
+    min_pass.validate();
+    max_fail.validate();
+    max_pass.validate();
+    minmax_fail.validate();
+    minmax_fail2.validate();
+    minmax_pass.validate();
+
+    assert.ok(min_fail.errors.one);
+    assert.ok(!min_pass.has_errors);
+    assert.ok(max_fail.errors.two);
+    assert.ok(!max_pass.has_errors);
+    assert.ok(minmax_fail.errors.three);
+    assert.ok(minmax_fail2.errors.three);
+    assert.ok(!minmax_pass.has_errors);
+  },
+  'test async validation': function (assert, done) {
+    var async_pass = new AsyncV({ test: 'passed' });
+    var async_fail = new AsyncV({ test: 'failed' });
+
+    async_pass.validate(function (error) {
+      assert.ok(!error);
+      assert.ok(!async_pass.has_errors);
+
+      async_fail.validate(function (error) {
+        assert.ok(error);
+
+        assert.ok(async_fail.has_errors);
+        assert.ok(async_fail.errors.test);
+
+        done();
+      });
+    });
   },
   'test require fail': function (assert, done) {
     var car = new Car({
