@@ -8,10 +8,3 @@ module.exports = {
     --orm.pending || orm.db.end();
   }
 };
-
-// Some queries.
-{
-  name: 'tim'
-}
-
-// Some 
