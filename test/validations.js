@@ -203,6 +203,29 @@ module.exports = {
       done();
     });
   },
+  'test save remove': function (assert, done) {
+    var car = new Car({
+      name:   string,
+      count:  number,
+      dealer: email,
+      owner:  email,
+      data:   buffer
+    });
+
+    var errors = car.validate();
+    assert.ok(!errors);
+
+    car.save(function (error) {
+      assert.ok(!error);
+
+      car.remove(function (error) {
+        assert.ok(!error);
+        assert.ok(car.removed);
+
+        done();
+      });
+    });
+  },
   'test unique fail': function (assert, done) {
     var car = new Car({
       name:   string,
