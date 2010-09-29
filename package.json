@@ -7,9 +7,8 @@
     "type": "git",
     "url": "http://github.com/biggie/biggie-orm.git"
   },
-  "engine": [ "node >=0.1.99" ],
+  "engine": [ "node >=0.2.2" ],
   "dependencies": {
-    "socket.io": ">=0.5.3",
     "redis": ">=0.2.2",
     "parallel": ">=0.1.3"
   },
