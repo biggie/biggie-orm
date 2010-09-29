@@ -6,7 +6,7 @@ var orm    = require('../'),
 
 var User = orm.model('User', {
   name: {type: 'string', required: true},
-  //email: {type: 'email', email: true},
+  email: {type: 'email', email: true},
   key: {type: 'number', unique: true},
   image: {type: 'binary'},
 
@@ -39,7 +39,7 @@ for (var i = 0; i < 1; i++) {
 
   user = new User({
     name: 'Tim',
-    //email: 'test@example.com',
+    email: 'test@example.com',
     key: counter,
     image: buffer
   });
@@ -61,7 +61,7 @@ for (var i = 0; i < 1; i++) {
 collection.save(function (error) {
   User.clear(function (error) {
     Comment.clear(function (error) {
-      orm.db.end();
+      console.log('done');
     });
   });
 });

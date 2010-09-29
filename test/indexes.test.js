@@ -115,6 +115,33 @@ module.exports = {
       });
     });
   },
+  'test find children simple': function (assert, done) {
+    var cat = new Cat({
+      name: 'Elmo',
+      age: 5
+    });
+    var toy = new Toy({
+      name: 'ball',
+      votes: 5
+    });
+    var toy2 = new Toy({
+      name: 'mouse',
+      votes: 10
+    });
+
+    cat.addToy(toy);
+    cat.addToy(toy2);
+
+    cat.save(function (error) {
+      assert.ok(!error);
+
+      cat.findToys({ name: 'ball' }).all(function (error, coll) {
+        assert.ok(!error);
+        assert.equal(1, coll.length);
+        done();
+      });
+    });
+  },
   after: function () {
     --orm.pending || orm.db.end();
   }
