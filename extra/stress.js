@@ -1,5 +1,5 @@
-var orm    = require('../'),
-    cycles = 100000,
+var orm        = require('../'),
+    iterations = 10000,
     user,
     comment,
     comment2;
@@ -34,7 +34,7 @@ var buffer = new Buffer('some randome data alksjd as jdlkasj dlaksj dlkas jdkl a
 var counter = 0, done = 0;
 var collection = new orm.Collection();
 
-for (var i = 0; i < 1; i++) {
+for (var i = 0; i < iterations; i++) {
   counter++;
 
   user = new User({
