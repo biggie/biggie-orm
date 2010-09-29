@@ -1,3 +1,0 @@
-[submodule "lib/biggie-orm/client/socket.io"]
-	path = lib/biggie-orm/client/socket.io
-	url = http://github.com/LearnBoost/Socket.IO.git

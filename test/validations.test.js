@@ -1,6 +1,8 @@
 var orm = require('orm'),
     v   = require('../lib/validations');
 
+orm.connect();
+
 var Collection = orm.Collection;
 
 orm.pending || (orm.pending = 0);

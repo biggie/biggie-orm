@@ -1,6 +1,8 @@
 var orm        = require('orm'),
     Collection = orm.Collection;
 
+orm.connect();
+
 orm.pending || (orm.pending = 0);
 ++orm.pending;
 

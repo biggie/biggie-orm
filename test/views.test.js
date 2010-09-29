@@ -1,5 +1,7 @@
 var orm = require('orm');
 
+orm.connect();
+
 orm.pending || (orm.pending = 0);
 ++orm.pending;
 

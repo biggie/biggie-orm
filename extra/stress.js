@@ -4,6 +4,8 @@ var orm        = require('../'),
     comment,
     comment2;
 
+orm.connect();
+
 var User = orm.model('User', {
   name: {type: 'string', required: true},
   email: {type: 'email', email: true},
