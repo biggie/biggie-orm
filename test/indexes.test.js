@@ -138,6 +138,146 @@ module.exports = {
       cat.findToys({ name: 'ball' }).all(function (error, coll) {
         assert.ok(!error);
         assert.equal(1, coll.length);
+        assert.equal(5, coll[0].votes);
+        done();
+      });
+    });
+  },
+  'test find children number': function (assert, done) {
+    var cat = new Cat({
+      name: 'Elmo',
+      age: 5
+    });
+    var toy = new Toy({
+      name: 'ball',
+      votes: 5
+    });
+    var toy2 = new Toy({
+      name: 'mouse',
+      votes: 10
+    });
+
+    cat.addToy(toy);
+    cat.addToy(toy2);
+
+    cat.save(function (error) {
+      assert.ok(!error);
+
+      cat.findToys({ votes: 10 }).all(function (error, coll) {
+        assert.ok(!error);
+        assert.equal(1, coll.length);
+        assert.equal('mouse', coll[0].name);
+        done();
+      });
+    });
+  },
+  'test find children range': function (assert, done) {
+    var cat = new Cat({
+      name: 'Elmo',
+      age: 5
+    });
+    var toy = new Toy({
+      name: 'ball',
+      votes: 5
+    });
+    var toy2 = new Toy({
+      name: 'mouse',
+      votes: 10
+    });
+
+    cat.addToy(toy);
+    cat.addToy(toy2);
+
+    cat.save(function (error) {
+      assert.ok(!error);
+
+      cat.findToys({ votes: {gt: 3, lt: 6} }).all(function (error, coll) {
+        assert.ok(!error);
+        assert.equal(1, coll.length);
+        assert.equal('ball', coll[0].name);
+        done();
+      });
+    });
+  },
+  'test find children some': function (assert, done) {
+    var cat = new Cat({
+      name: 'Elmo',
+      age: 5
+    });
+    var toy = new Toy({
+      name: 'ball',
+      votes: 5
+    });
+    var toy2 = new Toy({
+      name: 'mouse',
+      votes: 10
+    });
+
+    cat.addToy(toy);
+    cat.addToy(toy2);
+
+    cat.save(function (error) {
+      assert.ok(!error);
+
+      cat.findToys({ votes: {gt: 3, lt: 12} }).limit(1, function (error, coll) {
+        assert.ok(!error);
+        assert.equal(1, coll.length);
+        assert.equal('mouse', coll[0].name);
+        done();
+      });
+    });
+  },
+  'test find children intersection': function (assert, done) {
+    var cat = new Cat({
+      name: 'Elmo',
+      age: 5
+    });
+    var toy = new Toy({
+      name: 'ball',
+      votes: 5
+    });
+    var toy2 = new Toy({
+      name: 'mouse',
+      votes: 10
+    });
+
+    cat.addToy(toy);
+    cat.addToy(toy2);
+
+    cat.save(function (error) {
+      assert.ok(!error);
+
+      cat.findToys({ name: 'ball', votes: {gt: 6, lt: 12} }).all(function (error, coll) {
+        assert.ok(!error);
+        assert.equal(0, coll.length);
+        done();
+      });
+    });
+  },
+  'test find children intersection2': function (assert, done) {
+    var cat = new Cat({
+      name: 'Elmo',
+      age: 5
+    });
+    var toy = new Toy({
+      name: 'ball',
+      votes: 5
+    });
+    var toy2 = new Toy({
+      name: 'mouse',
+      votes: 10
+    });
+
+    cat.addToy(toy);
+    cat.addToy(toy2);
+
+    cat.save(function (error) {
+      assert.ok(!error);
+
+      cat.findToys({ name: 'ball', votes: {gt: 2, lt: 12} }).all(function (error, coll) {
+        assert.ok(!error);
+        assert.equal(1, coll.length);
+        assert.equal(5, coll[0].votes);
         done();
       });
     });
