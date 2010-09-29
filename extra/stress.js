@@ -59,8 +59,10 @@ for (var i = 0; i < 1; i++) {
 }
 
 collection.save(function (error) {
-  collection.remove(function (error) {
-    orm.db.end();
+  User.clear(function (error) {
+    Comment.clear(function (error) {
+      orm.db.end();
+    });
   });
 });
 
