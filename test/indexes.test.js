@@ -7,7 +7,9 @@ orm.pending || (orm.pending = 0);
 
 var Cat = orm.model('Cat', {
   name: {type: 'string', required: true, unique: true},
-  age:  {type: 'number'},
+  age: {type: 'number'},
+  kittens: {type: 'number'},
+  tail: {type: 'string'},
 
   indexes: ['age'],
   has_many: ['toys']
@@ -278,6 +280,151 @@ module.exports = {
         assert.ok(!error);
         assert.equal(1, coll.length);
         assert.equal(5, coll[0].votes);
+        done();
+      });
+    });
+  },
+  'test find fn': function (assert, done) {
+    var cat = new Cat({
+      name: 'Tinkerbell',
+      age: 5
+    });
+    var cat2 = new Cat({
+      name: 'Elmo',
+      age: 3
+    });
+    var cat3 = new Cat({
+      name: 'Basil',
+      age: 1
+    });
+    var cats = new Collection([cat, cat2, cat3]);
+
+    cats.save(function (error) {
+      assert.ok(!error);
+
+      Cat.find(function (cat) {
+        if (3 === cat.age) return true;
+        return false;
+      }).all(function (error, coll) {
+        assert.ok(!error);
+
+        assert.equal(1, coll.length)
+        assert.equal('Elmo', coll[0].name);
+
+        done();
+      });
+    });
+  },
+  'test find user level': function (assert, done) {
+    var cat = new Cat({
+      name: 'Tinkerbell',
+      age: 5,
+      kittens: 12,
+      tail: 'fluffy'
+    });
+    var cat2 = new Cat({
+      name: 'Elmo',
+      age: 3,
+      kittens: 7,
+      tail: 'short'
+    });
+    var cat3 = new Cat({
+      name: 'Basil',
+      age: 1,
+      kittens: 2,
+      tail: 'lanky'
+    });
+    var cats = new Collection([cat, cat2, cat3]);
+
+    cats.save(function (error) {
+      assert.ok(!error);
+
+      Cat.find({
+        tail: 'short',
+        kittens: {
+          gt: 8,
+          lt: 10
+        }
+      }).all(function (error, coll) {
+        assert.ok(!error);
+
+        assert.equal(0, coll.length)
+
+        done();
+      });
+    });
+  },
+  'test find user level2': function (assert, done) {
+    var cat = new Cat({
+      name: 'Tinkerbell',
+      age: 5,
+      kittens: 12,
+      tail: 'fluffy'
+    });
+    var cat2 = new Cat({
+      name: 'Elmo',
+      age: 3,
+      kittens: 7,
+      tail: 'short'
+    });
+    var cat3 = new Cat({
+      name: 'Basil',
+      age: 1,
+      kittens: 2,
+      tail: 'lanky'
+    });
+    var cats = new Collection([cat, cat2, cat3]);
+
+    cats.save(function (error) {
+      assert.ok(!error);
+
+      Cat.find({
+        kittens: {
+          gt: 9,
+          lt: 15
+        }
+      }).all(function (error, coll) {
+        assert.ok(!error);
+
+        assert.equal(1, coll.length)
+        assert.equal('Tinkerbell', coll[0].name);
+
+        done();
+      });
+    });
+  },
+  'test find user level3': function (assert, done) {
+    var cat = new Cat({
+      name: 'Tinkerbell',
+      age: 5,
+      kittens: 12,
+      tail: 'fluffy'
+    });
+    var cat2 = new Cat({
+      name: 'Elmo',
+      age: 3,
+      kittens: 7,
+      tail: 'short'
+    });
+    var cat3 = new Cat({
+      name: 'Basil',
+      age: 1,
+      kittens: 2,
+      tail: 'lanky'
+    });
+    var cats = new Collection([cat, cat2, cat3]);
+
+    cats.save(function (error) {
+      assert.ok(!error);
+
+      Cat.find({
+        kittens: 7
+      }).all(function (error, coll) {
+        assert.ok(!error);
+
+        assert.equal(1, coll.length)
+        assert.equal('Elmo', coll[0].name);
+
         done();
       });
     });
