@@ -14,7 +14,6 @@ var Town = orm.model('Town', {
 var House = orm.model('House', {
   age: {type: 'number'},
 
-  plural: 'houses',
   views: ['old', 'new'],
   viewCallback: function () {
     var views = [];

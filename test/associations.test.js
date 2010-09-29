@@ -23,7 +23,6 @@ var Task = orm.model('Task', {
 var Comment = orm.model('Comment', {
   text: {type: 'string'},
 
-  plural: 'comments',
   belongs_to: ['project', 'task']
 });
 

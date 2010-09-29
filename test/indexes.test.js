@@ -22,7 +22,6 @@ var Toy = orm.model('Toy', {
   votes: {type: 'number'},
 
   indexes: ['votes'],
-  plural: 'toys',
   belongs_to: ['cat']
 });
 
