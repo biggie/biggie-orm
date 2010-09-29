@@ -34,7 +34,7 @@ var buffer = new Buffer('some randome data alksjd as jdlkasj dlaksj dlkas jdkl a
 var counter = 0, done = 0;
 var collection = new orm.Collection();
 
-for (var i = 0; i < 1000; i++) {
+for (var i = 0; i < 1; i++) {
   counter++;
 
   user = new User({
