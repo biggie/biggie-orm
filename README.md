@@ -13,4 +13,4 @@ More to come...
 
 We use lighthouse for our issues. File bugs and requests here:
 
-http://biggiejs.lighthouseapp.com/projects/60350-biggie-orm/overview
+[http://biggiejs.lighthouseapp.com/projects/60350-biggie-orm/overview](http://biggiejs.lighthouseapp.com/projects/60350-biggie-orm/overview)
