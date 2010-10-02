@@ -1,35 +1,14 @@
 var orm        = require('../'),
-    iterations = 10000,
+    iterations = 333, // Around 1k total model inserts.
     user,
     comment,
     comment2;
 
 orm.connect();
 
-var User = orm.model('User', {
-  name: {type: 'string', required: true},
-  email: {type: 'email', email: true},
-  key: {type: 'number', unique: true},
-  image: {type: 'binary'},
-
-  has_many: ['comments'],
-  indexes: ['name']
-});
-
-var Comment = orm.model('Comment', {
-  text: {type: 'string'},
-  date: {type: 'number'},
-
-  plural: 'comments',
-  indexes: ['date'],
-  belongs_to: ['user'],
-  views: ['old'],
-  viewCallback: function () {
-    var ret = [];
-    if (counter % 2) ret.push('old');
-    return ret;
-  }
-});
+require('./models');
+var User    = orm.model('User');
+var Comment = orm.model('Comment');
 
 var buffer = new Buffer('some randome data alksjd as jdlkasj dlaksj dlkas jdkl ajslkd jaslkj doaisjoiawj doi awjd owa');
 
@@ -61,10 +40,16 @@ for (var i = 0; i < iterations; i++) {
 }
 
 collection.save(function (error) {
-  User.clear(function (error) {
-    Comment.clear(function (error) {
-      orm.db.end();
-    });
-  });
+  orm.db.end();
 });
 
+//User.all(function (error, coll) {
+  //var user;
+  //for (var i = 0, il = coll.length; i < il; i++) {
+    //user = coll[i];
+    //user.name = 'Bob';
+  //}
+  //coll.save(function (error) {
+    //orm.db.end();
+  //});
+//});
