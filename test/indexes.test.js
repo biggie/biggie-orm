@@ -118,6 +118,34 @@ module.exports = {
       });
     });
   },
+  'test find range': function (assert, done) {
+    var cat = new Cat({
+      name: 'Tinkerbell',
+      age: 5
+    });
+    var cat2 = new Cat({
+      name: 'Elmo',
+      age: 3
+    });
+    var cat3 = new Cat({
+      name: 'Basil',
+      age: 1
+    });
+    var cats = new Collection([cat, cat2, cat3]);
+
+    cats.save(function (error) {
+      assert.ok(!error);
+
+      Cat.find().some(1, 2, function (error, coll) {
+        assert.ok(!error);
+
+        assert.equal(2, coll.length);
+        assert.equal('Elmo', coll[0].name);
+
+        done();
+      });
+    });
+  },
   'test find children simple': function (assert, done) {
     var cat = new Cat({
       name: 'Elmo',
@@ -306,11 +334,10 @@ module.exports = {
       Cat.find(function (cat) {
         if (3 === cat.age) return true;
         return false;
-      }).all(function (error, coll) {
+      }).first(function (error, cat) {
         assert.ok(!error);
 
-        assert.equal(1, coll.length)
-        assert.equal('Elmo', coll[0].name);
+        assert.equal('Elmo', cat.name);
 
         done();
       });
