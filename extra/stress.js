@@ -63,7 +63,7 @@ for (var i = 0; i < iterations; i++) {
 collection.save(function (error) {
   User.clear(function (error) {
     Comment.clear(function (error) {
-      console.log('done');
+      orm.db.end();
     });
   });
 });
