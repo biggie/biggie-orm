@@ -1,5 +1,5 @@
 var orm        = require('../'),
-    iterations = 333, // Around 1k total model inserts.
+    iterations = 1000, // Around 1k total model inserts.
     user,
     comment,
     comment2;
@@ -24,17 +24,17 @@ for (var i = 0; i < iterations; i++) {
     key: counter,
     image: buffer
   });
-  comment = new Comment({
-    text: 'This is a comment 1',
-    date: Date.now()
-  });
-  comment2 = new Comment({
-    text: 'This is a comment 2',
-    date: Date.now()
-  });
+  //comment = new Comment({
+    //text: 'This is a comment 1',
+    //date: Date.now()
+  //});
+  //comment2 = new Comment({
+    //text: 'This is a comment 2',
+    //date: Date.now()
+  //});
 
-  user.addComment(comment);
-  user.addComment(comment2);
+  //user.addComment(comment);
+  //user.addComment(comment2);
 
   collection.push(user);
 }
