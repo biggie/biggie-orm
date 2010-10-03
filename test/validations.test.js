@@ -46,20 +46,26 @@ module.exports = {
     Car.clear(callback);
   },
   'test type string': function (assert) {
-    assert.isNull(orm.property_types.string(function () {}));
-    assert.equal('test', orm.property_types.string('test'));
-    assert.equal('{"test":123}', orm.property_types.string({test: 123}));
+    assert.isNull(orm.property_types.string.out(function () {}));
+    assert.equal('test', orm.property_types.string.out('test'));
+    assert.equal('{"test":123}', orm.property_types.string.out({test: 123}));
+  },
+  'test type json': function (assert) {
+    assert.isNull(orm.property_types.json.out(function () {}));
+    assert.equal('"test"', orm.property_types.json.out('test'));
+    assert.equal('{"test":123}', orm.property_types.string.out({test: 123}));
+    assert.eql({key: 'value', test: 123}, orm.property_types.json.in(new Buffer('{"key":"value","test":123}')));
   },
   'test type number': function (assert) {
-    assert.isNull(orm.property_types.number(function () {}));
-    assert.isNull(orm.property_types.number('test'));
-    assert.equal(123, orm.property_types.number('123'));
-    assert.equal(321, orm.property_types.number(321));
+    assert.isNull(orm.property_types.number.out(function () {}));
+    assert.isNull(orm.property_types.number.out('test'));
+    assert.equal(123, orm.property_types.number.out('123'));
+    assert.equal(321, orm.property_types.number.out(321));
   },
   'test type binary': function (assert) {
-    assert.isNull(orm.property_types.binary(function () {}));
-    assert.equal('test', orm.property_types.binary('test').toString());
-    assert.equal('test', orm.property_types.binary(new Buffer('test')).toString());
+    assert.isNull(orm.property_types.binary.out(function () {}));
+    assert.equal('test', orm.property_types.binary.out('test').toString());
+    assert.equal('test', orm.property_types.binary.out(new Buffer('test')).toString());
   },
   'Can pass validation sync': function (assert) {
     var car = new Car({
