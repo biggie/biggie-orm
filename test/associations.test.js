@@ -26,11 +26,30 @@ var Comment = orm.model('Comment', {
   belongs_to: ['project', 'task']
 });
 
+// Many many
+var Worker = orm.model('Worker', {
+  name: {type: 'string'},
+
+  has_many:   ['jobs'],
+  belongs_to: ['job']
+});
+
+var Job = orm.model('Job', {
+  title: {type: 'string'},
+
+  has_many:   ['workers'],
+  belongs_to: ['worker']
+});
+
 module.exports = {
   setup: function (callback) {
     Project.clear(function (error) {
       Task.clear(function (error) {
-        Comment.clear(callback);
+        Comment.clear(function (error) {
+          Job.clear(function (error) {
+            Worker.clear(callback);
+          });
+        });
       });
     });
   },
