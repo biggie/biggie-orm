@@ -29,7 +29,13 @@ var Comment = orm.model('Comment', {
 // Many many
 var Worker = orm.model('Worker', {
   name: {type: 'string'},
+  age:  {type: 'number', unique: true},
 
+  indexes:    ['name'],
+  views:      ['test'],
+  viewCallback: function () {
+    return ['test'];
+  },
   has_many:   ['jobs'],
   belongs_to: ['job']
 });
@@ -140,6 +146,34 @@ module.exports = {
       assert.equal(comment2.project_id, project.id);
 
       done();
+    });
+  },
+  'test many_many': function (assert, done) {
+    var job = new Job({
+      title: 'IT'
+    });
+
+    var worker = new Worker({
+      name: 'Bob',
+      age: 20
+    });
+
+    job.addWorker(worker);
+
+    job.save(function (error) {
+      assert.ok(!error);
+
+      assert.ok(!worker.is_new);
+      assert.equal(1, worker.id);
+
+      worker.getJobs(function (error, coll) {
+        assert.ok(!error);
+
+        assert.equal(1, coll.length);
+        assert.equal(job.id, coll[0].id);
+
+        done();
+      });
     });
   },
   'test has_one + get': function (assert, done) {
