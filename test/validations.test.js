@@ -53,7 +53,7 @@ module.exports = {
   'test type json': function (assert) {
     assert.isNull(orm.property_types.json.out(function () {}));
     assert.equal('"test"', orm.property_types.json.out('test'));
-    assert.equal('{"test":123}', orm.property_types.string.out({test: 123}));
+    assert.equal('{"test":123}', orm.property_types.json.out({test: 123}));
     assert.eql({key: 'value', test: 123}, orm.property_types.json.in(new Buffer('{"key":"value","test":123}')));
   },
   'test type number': function (assert) {
