@@ -7,7 +7,7 @@ var User = orm.model('User', {
   email: {type: 'string', email: true},
   //key: {type: 'number', unique: true},
   key: {type: 'number'},
-  image: {type: 'binary'},
+  //image: {type: 'binary'},
 
   //has_many: ['comments'],
   //indexes: ['name']
