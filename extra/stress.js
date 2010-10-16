@@ -1,5 +1,5 @@
 var orm        = require('../'),
-    iterations = 5000, // Around 1k total model inserts.
+    iterations = 100, // Around 1k total model inserts.
     user,
     comment,
     comment2;
@@ -47,7 +47,8 @@ collection.save(function (error) {
       user.name = 'Bob';
     }
     coll.save(function (error) {
-      orm.db.end();
+      //orm.db.end();
+      console.log('done');
     });
   });
 });
